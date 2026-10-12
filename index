@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ถ้าเกี๊ยวเสียใจ 🥟</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      padding: 24px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, sans-serif;
+      color: #65434e;
+      background: linear-gradient(145deg, #fff1f5, #ffe0eb);
+    }
+
+    .card {
+      width: 100%;
+      max-width: 480px;
+      padding: 28px 22px;
+      text-align: center;
+      background: #fffafc;
+      border: 2px solid white;
+      border-radius: 28px;
+      box-shadow: 0 15px 50px #c9638520;
+    }
+
+    .emoji {
+      font-size: 42px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0 0 20px;
+      font-size: clamp(23px, 6vw, 32px);
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .dog {
+      display: block;
+      width: 100%;
+      max-height: 340px;
+      object-fit: contain;
+      margin: 0 auto 22px;
+      border-radius: 18px;
+      background: #fff0f5;
+    }
+
+    .choices {
+      display: grid;
+      gap: 12px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px 18px;
+      border: none;
+      border-radius: 16px;
+      font: inherit;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: transform 0.15s, background 0.15s;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    button:focus-visible {
+      outline: 3px solid #a83260;
+      outline-offset: 4px;
+    }
+
+    .sweet {
+      color: white;
+      background: #ef789e;
+      box-shadow: 0 5px 15px #ef789e35;
+    }
+
+    .naughty {
+      color: #875367;
+      background: #ffe8f0;
+    }
+
+    .back {
+      margin-top: 8px;
+      color: white;
+      background: #ef789e;
+    }
+
+    .message {
+      margin: 0 0 20px;
+      font-size: 19px;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .appear {
+      animation: appear 0.3s ease-out;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .appear {
+        animation: none;
+      }
+
+      button {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card">
+    <!-- หน้าคำถาม -->
+    <section id="questionPage">
+      <div class="emoji" aria-hidden="true">🥟💭</div>
+      <h1>ถ้าเกี๊ยวเสียใจต้องทำยังไง</h1>
+
+      <img
+        class="dog"
+        src="question.jpeg"
+        alt="รูปหมาดีใจและหมาเสียใจ"
+      >
+
+      <div class="choices">
+        <button class="sweet" type="button" onclick="showResult(1)">
+          1. ง้อ 💖
+        </button>
+
+        <button class="naughty" type="button" onclick="showResult(2)">
+          2. เตะตูด 🦶
+        </button>
+
+        <button class="naughty" type="button" onclick="showResult(3)">
+          3. หยิกก้น 🤏
+        </button>
+      </div>
+    </section>
+
+    <!-- หน้าผลลัพธ์ -->
+    <section id="resultPage" hidden>
+      <div id="resultEmoji" class="emoji" aria-hidden="true"></div>
+      <h1 id="resultTitle" tabindex="-1"></h1>
+
+      <img id="resultImage" class="dog" src="happy.jpeg" alt="">
+
+      <p id="resultMessage" class="message"></p>
+
+      <button class="back" type="button" onclick="restart()">
+        ลองตอบใหม่ ↩
+      </button>
+    </section>
+  </main>
+
+  <script>
+    const questionPage = document.getElementById("questionPage");
+    const resultPage = document.getElementById("resultPage");
+    const resultEmoji = document.getElementById("resultEmoji");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultImage = document.getElementById("resultImage");
+    const resultMessage = document.getElementById("resultMessage");
+
+    let lastChoice = 1;
+
+    function showResult(answer) {
+      lastChoice = answer;
+
+      if (answer === 1) {
+        resultEmoji.textContent = "💖✨";
+        resultTitle.textContent = "เย้! เกี๊ยวหายเสียใจแล้ว";
+        resultImage.src = "happy.jpeg";
+        resultImage.alt = "หมาดีใจ";
+        resultMessage.textContent =
+          "แค่ง้อเกี๊ยว เกี๊ยวก็ดีใจแล้ว\nมามะ ขอ hug หน่อยยย 🫶";
+      } else {
+        resultEmoji.textContent = "🥺💔";
+        resultTitle.textContent = "เกี๊ยวเสียใจกว่าเดิมแล้ว";
+        resultImage.src = "sad.jpeg";
+        resultImage.alt = "หมาเสียใจ";
+
+        resultMessage.textContent = answer === 2
+          ? "เกี๊ยวเสียใจอยู่ ยังจะมาเตะตูดอีก 😭\nตอบใหม่เลยนะ!"
+          : "เกี๊ยวเสียใจอยู่ ยังจะมาหยิกก้นอีก 😭\nตอบใหม่เลยนะ!";
+      }
+
+      questionPage.hidden = true;
+      resultPage.hidden = false;
+      resultPage.classList.add("appear");
+      resultTitle.focus({ preventScroll: true });
+    }
+
+    function restart() {
+      resultPage.hidden = true;
+      resultPage.classList.remove("appear");
+      questionPage.hidden = false;
+      questionPage.querySelectorAll("button")[lastChoice - 1].focus({
+        preventScroll: true
+      });
+    }
+  </script>
+</body>
+</html>
